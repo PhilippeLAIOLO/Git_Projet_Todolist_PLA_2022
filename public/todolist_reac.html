@@ -1,0 +1,41 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <script>
+
+            function addElement (name, content){
+                let newElement = document.createElement(name)
+                newElement.textContent = content
+                document.body.append(newElement)               
+                
+            }
+
+            addElement("h1", "je suis un titre")
+            addElement("p", "je suis un paragraphe")
+             
+            for (let i =0; i < 5; i++){
+                addElement("p", "je suis encore un paragraphe")
+            }
+            
+            fetch("/get_json")
+
+            .then(function(response){
+
+                return response.json()
+
+            }).then(function(json){
+
+                for (let i =0; i < json.length; i++){
+                    addElement("h1", json[i].nom)
+                    addElement("p", json[i].sujet)
+					console.log("json sujet", json[i].sujet)
+                }
+
+            })
+            
+        </script>
+    </body>
+    
+</html>

@@ -1,0 +1,115 @@
+<html>
+
+<head>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+          <!-- Latest compiled and minified CSS -->
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+          <!-- jQuery library -->
+          <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+          <!-- Popper JS -->
+          <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+          <!-- Latest compiled JavaScript -->
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+<!-- pour lancer :  http://localhost:3000/test_react.html  -->
+    <div id="root">
+
+    </div>
+
+
+
+    <script type="text/babel">
+
+       
+        function Titre(props) {
+            return (
+                <h1>
+					<div class="row  justify-content-center align-items-center ">
+                    Projet Todolist
+					</div>
+                </h1>
+            );
+        }
+
+        function Page(props) {
+
+            let componentTask = props.tasks.map(t => {
+                return (
+                    <Task props={t} />
+                )
+            }
+            )
+
+            return (
+                <div>
+						<Titre />
+						{componentTask}
+                </div>
+            )
+        }
+
+        function Task({ props }) {
+            return (
+                
+			<div>
+				<div class="row  ">
+					<div class="row col-12" > 
+								<div class="row col-1" > <p></p></div>
+                                <div class="row col-1" > <p>{props.nom}</p></div>
+                                <div class="row col-2" > <p>{props.sujet} </p></div>
+					            <div class="row col-5" > <p>{props.desc_sujet} </p></div>
+					            <div class="row col-1" > <p>{props.deadline} </p></div>
+					            <div class="row col-1" > <p>{props.statut} </p></div>
+								<div class="row col-1" > <p></p></div>
+					</div>
+			  </div>
+            </div>
+
+            )
+        }
+
+
+        function fetchTask() {
+            var htmlinsertionpoint = document.getElementById('functionbar');
+            var myRequest = new Request('/get_json');
+
+            fetch(myRequest)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP error, status = " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    const domContainer = document.getElementById('root');
+                    ReactDOM.render(
+                        <Page tasks={myJson} />,
+                        domContainer
+                    );
+                })
+                .catch(function (error) {
+                    var p = document.createElement('p');
+                    p.appendChild(
+                        document.createTextNode('Error: ' + error.message)
+                    );
+                    document.body.insertBefore(p, htmlinsertionpoint);
+                });
+
+        }
+
+        fetchTask()
+
+    </script>
+
+
+
+</body>
+
+</html>
